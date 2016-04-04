@@ -2,10 +2,10 @@ package species;
 
 import java.util.List;
 
-class species {
+public class Species {
 	private int population;
-	private List<Integer> predator;
-	private List<Integer> prey;
+	//private List<Integer> predator;
+	//private List<Integer> prey;
 	
 	public void setPopulation(int population){
 		this.population = population;
@@ -15,6 +15,7 @@ class species {
 		return population;
 	}
 	
+	/*
 	public void setPredator(List<Integer> predator){
 		this.predator = predator;
 	}
@@ -27,5 +28,5 @@ class species {
 		this.prey = prey;
 	}
 	
-	
+	*/
 }
