@@ -2,6 +2,7 @@ package main;
 
 import java.util.List;
 import species.Species;
+import functions.*;
 
 //import species;
 
@@ -19,7 +20,7 @@ public class SimulationEngine {
 	 * This function is used for updating the population of species for each time step.
 	 */
 	//Qiang
-	public void update(List<Species> speciesList, List<List<Integer>> speciesRelation){
+	public static void update(List<Species> speciesList, List<List<Integer>> speciesRelation){
 		
 	}
 	
@@ -28,7 +29,7 @@ public class SimulationEngine {
 	 * and whether the species relationship changes.
 	 */
 	//Tong
-	private void environmentUpdate(List<Species> speciesList){
+	private static void environmentUpdate(List<Species> speciesList){
 		
 	}
 	
