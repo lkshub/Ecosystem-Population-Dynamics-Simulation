@@ -13,7 +13,11 @@ public class SimulationEngine {
 	 */
 	//Yuzhi
 	public static void initialize(int numSpecies, List<Species> speciesList){
-		
+		for (int i=0; i<numSpecies; i++) {
+			Species s = new Species();
+			s.setPopulation((int)Function.GaussianRNG(100, 20));
+			speciesList.add(s);
+		}
 	}
 	
 	/**
