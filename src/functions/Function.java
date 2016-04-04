@@ -1,4 +1,5 @@
 package functions;
+import java.util.Random;
 
 public class Function {
 	
@@ -8,8 +9,10 @@ public class Function {
 	 */
 	
 	//Kai
-	public static int GaussianRNG(){
-		int number = 0;
+	public static double GaussianRNG(double avg,double variance){
+		double number = 0;
+		Random ran = new Random();
+		number = Math.sqrt(variance)*ran.nextGaussian()+avg;
 		/*
 		 *  Implements the content of the Random Number Generator function here 
 		 */
