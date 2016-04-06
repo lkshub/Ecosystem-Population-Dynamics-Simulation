@@ -1,4 +1,4 @@
-package species;
+package variable;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package main;
 
 import functions.*;
-import species.GlobalVariable;
-import species.Species;
+import variable.GlobalVariable;
+import variable.Species;
 
 import java.util.ArrayList;
 import java.util.List;

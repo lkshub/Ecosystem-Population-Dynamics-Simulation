@@ -1,8 +1,9 @@
 package main;
 
 import java.util.List;
-import species.Species;
+
 import functions.*;
+import variable.Species;
 
 //import species;
 
