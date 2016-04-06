@@ -1,6 +1,7 @@
 package species;
 
 import java.util.List;
+import functions.*;
 
 public class Species {
 	private int population;

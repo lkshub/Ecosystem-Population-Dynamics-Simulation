@@ -1,4 +1,4 @@
-package functions;
+package species;
 
 import java.util.List;
 

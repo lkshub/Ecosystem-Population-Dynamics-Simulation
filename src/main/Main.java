@@ -1,6 +1,7 @@
 package main;
 
 import functions.*;
+import species.GlobalVariable;
 import species.Species;
 
 import java.util.ArrayList;
