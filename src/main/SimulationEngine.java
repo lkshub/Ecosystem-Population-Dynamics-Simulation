@@ -27,6 +27,9 @@ public class SimulationEngine {
 	//Qiang
 	public static void update(List<Species> speciesList, List<List<Integer>> speciesRelation){
 		
+		
+		
+		environmentUpdate(speciesList);
 	}
 	
 	/**

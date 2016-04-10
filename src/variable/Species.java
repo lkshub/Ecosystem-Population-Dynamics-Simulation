@@ -5,6 +5,7 @@ import functions.*;
 
 public class Species {
 	private int population;
+	private int speciesNo;
 	//private List<Integer> predator;
 	//private List<Integer> prey;
 	
@@ -14,6 +15,11 @@ public class Species {
 	
 	public int getPopulation(){
 		return population;
+	}
+	
+	public Species initializeSpecies(){
+		Species species = new Species();
+		return species;
 	}
 	
 	/*

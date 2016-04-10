@@ -16,7 +16,7 @@ public class Main {
 		
 		int numSpecies = 10;
 		SimulationEngine.initialize(numSpecies, speciesList);
-		SimulationEngine.update(speciesList, globalVariable.speciesRelation);
+		SimulationEngine.update(speciesList, globalVariable.getSpeciesRelation());
 		
 //		for (Species s : speciesList) {
 //			System.out.println(s.getPopulation());
