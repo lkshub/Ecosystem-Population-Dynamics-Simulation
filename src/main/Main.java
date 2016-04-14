@@ -9,18 +9,20 @@ import java.util.List;
 
 public class Main {
 	public static void main(String[] args){
-		
+		/** old
 		GlobalVariable globalVariable = new GlobalVariable();
 		List<Species> speciesList = new ArrayList<Species>();
-		
-		
 		int numSpecies = 10;
 		SimulationEngine.initialize(numSpecies, speciesList);
 		SimulationEngine.update(speciesList, globalVariable.getSpeciesRelation());
+		*/
 		
-//		for (Species s : speciesList) {
-//			System.out.println(s.getPopulation());
-//		}
-
+		List<List<Double>> S = new ArrayList<>();
+		List<List<Double>> alpha = new ArrayList<>();
+		List<List<Double>> f = new ArrayList<>();
+		List<Integer> N = new ArrayList<>();
+		List<Boolean> attr = new ArrayList<>();
+		
+		SimulationEngine.initialize(20, 5, 7, 0.2, S, alpha, f, N, attr);
 	}
 }
