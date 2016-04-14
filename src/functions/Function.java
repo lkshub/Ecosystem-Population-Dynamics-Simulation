@@ -1,4 +1,6 @@
 package functions;
+
+import java.util.HashSet;
 import java.util.Random;
 
 public class Function {
@@ -19,5 +21,20 @@ public class Function {
 		return number;
 	}
 	
+	//Yuzhi
+	public static int[] uniqueRandom(int m, int n) {
+		HashSet<Integer> set = new HashSet<>();
+		int[] uniqueList = new int[m];
+		int ulIndex = 0;
+		int ulNum = 0;
+		while(ulIndex < m) {
+			ulNum = (int) (Math.random()*n);
+			if(!set.contains(ulNum)){
+				set.add(ulNum);
+				uniqueList[ulIndex++] = ulNum;
+			}
+		}
+		return uniqueList;
+	}
 	
 }
