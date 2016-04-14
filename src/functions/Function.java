@@ -1,5 +1,6 @@
 package functions;
 
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -21,6 +22,12 @@ public class Function {
 		return number;
 	}
 	
+	
+	/**
+	 * This function is used to generate m unique random integer among 0 ~ n-1
+	 * @return unique random number list
+	 */
+	
 	//Yuzhi
 	public static int[] uniqueRandom(int m, int n) {
 		HashSet<Integer> set = new HashSet<>();
@@ -35,6 +42,16 @@ public class Function {
 			}
 		}
 		return uniqueList;
+	}
+	
+	/**
+	 * This function is used format a double number to 2-digit, i.e. "0.00"
+	 * @return String of the input, with the format of 0.00
+	 */
+	//Yuzhi
+	public static String printFormat2(double n) {
+		DecimalFormat pf2 = new DecimalFormat("0.00");
+		return pf2.format(n);
 	}
 	
 }
