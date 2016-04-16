@@ -178,7 +178,7 @@ public class SimulationEngine {
 		}
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
-		*/
+		**/
 		
 		//initialize n length list N - population
 		for(int i=0; i<n; i++) {
@@ -205,8 +205,12 @@ public class SimulationEngine {
 	 * This function is used for updating the population of species for each time step.
 	 */
 	//Qiang
-	public static void update(double b,List<Species> f, List<List<Integer>> speciesRelation){
-		
+	public static void update(double b,List<List<Double>> f, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
+		double error=updateParameters(f,b,g,alpha,N,S);
+		while(error>0.1){
+			error=updateParameters(f,b,g,alpha,N,S);
+		}
+		System.out.format("%f%n",error);
 		
 		
 
@@ -222,17 +226,31 @@ public class SimulationEngine {
 	 * @param S
 	 * @return
 	 */
+	//Kai
 	private static double updateParameters( List<List<Double>> f,double b, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
 		double error=0;
+		//calculate g
 		for(int i=0;i<g.size();i++){
 			for(int j=0;j<g.get(i).size();j++){
 				double sum=0;
 				for(int k=0;k<g.size();k++){
 					sum = sum + alpha.get(k).get(i)*S.get(k).get(j)*f.get(k).get(j)*N.get(k);		
 				}
-				g.get(i).set(i,S.get(i).get(j)*f.get(i).get(j)*N.get(j)/(b*N.get(j)+sum));
+				g.get(i).set(j,S.get(i).get(j)*f.get(i).get(j)*N.get(j)/(b*N.get(j)+sum));
 			}
 		}
+		System.out.println(g.size());
+		//test g
+		for(int i=0; i<g.size(); i++) {
+			for(int j=0; j<g.get(i).size(); j++) {
+				System.out.print(Function.printFormat2(g.get(i).get(j)) + " ");
+			}
+			System.out.println(" ");
+		}
+		System.out.println("------------------------------------------------------------"
+				 + "------------------------------------------------------------");
+		
+		//calculate f
 		for(int i=0;i<g.size();i++){
 			for(int j=0;j<g.get(i).size();j++){
 				double sum=0;
@@ -246,7 +264,7 @@ public class SimulationEngine {
 			}
 		}
 			
-		
+		//System.out.format("%f%n",error);
 		return error;
 		
 	}
