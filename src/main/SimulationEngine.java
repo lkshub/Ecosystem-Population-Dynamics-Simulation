@@ -231,7 +231,7 @@ public class SimulationEngine {
 		while(error>0.1){
 			error=updateParameters(f,b,g,alpha,N,S);
 		}
-		System.out.format("%f%n",error);
+		//System.out.format("%f%n",error);
 		
 		
 
@@ -260,7 +260,8 @@ public class SimulationEngine {
 				g.get(i).set(j,S.get(i).get(j)*f.get(i).get(j)*N.get(j)/(b*N.get(j)+sum));
 			}
 		}
-		System.out.println(g.size());
+		//System.out.println(g.size());
+		
 		//test g
 		for(int i=0; i<g.size(); i++) {
 			for(int j=0; j<g.get(i).size(); j++) {
@@ -282,9 +283,18 @@ public class SimulationEngine {
 				double newValue=g.get(i).get(j)/sum;
 				f.get(i).set(i,newValue);
 				error=Math.max(error,Math.abs((newValue-oldValue)/oldValue));
+				System.out.println(error);
 			}
 		}
-			
+		//test f
+		for(int i=0; i<f.size(); i++) {
+			for(int j=0; j<f.get(i).size(); j++) {
+				System.out.print(Function.printFormat2(f.get(i).get(j)) + " ");
+			}
+			System.out.println(" ");
+		}
+		System.out.println("------------------------------------------------------------"
+				 + "------------------------------------------------------------");
 		//System.out.format("%f%n",error);
 		return error;
 		
