@@ -17,15 +17,18 @@ public class Main {
 		SimulationEngine.update(speciesList, globalVariable.getSpeciesRelation());
 		*/
 		
+		int attributeNumTotal = 20;
+		int attributeNumSelect = 5;
+		int speciesNum = 7;
+		double c = 0.2;
 		List<List<Double>> S = new ArrayList<>();
 		List<List<Double>> alpha = new ArrayList<>();
 		List<List<Double>> f = new ArrayList<>();
+		List<List<Double>> g = new ArrayList<>();
 		List<Integer> N = new ArrayList<>();
 		List<Boolean> attr = new ArrayList<>();
-		List<List<Double>> g = new ArrayList<>();
-		double b = 0.1;
 		
-		SimulationEngine.initialize(20, 5, 7, 0.2, S, alpha, f, N, attr);
-		SimulationEngine.update(b,f,g,alpha,N,S);
+		SimulationEngine.initialize(attributeNumTotal, attributeNumSelect, speciesNum, c, S, alpha, f, g, N, attr);
+//		SimulationEngine.update(b,f,g,alpha,N,S);
 	}
 }

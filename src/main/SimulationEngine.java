@@ -17,12 +17,13 @@ public class SimulationEngine {
 	 * Output: S(nxn Matrix)
 	 * Output: alpha(nxn Matrix)
 	 * Output: f(nxn Matrix)
+	 * Output: g(nxn Matrix)
 	 * Output: N(n length list - each item is a list of used features' indexes)
 	 * Output: attr(K length list - whether used) ???
 	 */
 	//Yuzhi
 	public static void initialize(int K, int L, int n, double c,
-			List<List<Double>> S, List<List<Double>> alpha, List<List<Double>> f, List<Integer> N, List<Boolean> attr){
+			List<List<Double>> S, List<List<Double>> alpha, List<List<Double>> f, List<List<Double>> g, List<Integer> N, List<Boolean> attr){
 		
 		//create ana initialize KxK matrix m (Gaussian Dist.)
 		List<List<Double>> m = new ArrayList<>();
@@ -179,6 +180,26 @@ public class SimulationEngine {
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
 		**/
+		
+		//initialize nxn matrix g - simply all 0
+		for(int i=0; i<n; i++) {
+			List<Double> lIns = new ArrayList<>();
+			for(int j=0; j<n; j++) {
+				lIns.add(0.0);
+			}
+			g.add(lIns);
+		}
+		/**
+		//test g
+		for(int i=0; i<n; i++) {
+			for(int j=0; j<n; j++) {
+				System.out.print(Function.printFormat2(g.get(i).get(j)) + " ");
+			}
+			System.out.println(" ");
+		}
+		System.out.println("------------------------------------------------------------"
+				 + "------------------------------------------------------------");
+		*/
 		
 		//initialize n length list N - population
 		for(int i=0; i<n; i++) {
