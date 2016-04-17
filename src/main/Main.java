@@ -21,7 +21,7 @@ public class Main {
 		int attributeNumSelect = 5;
 		int speciesNum = 7;
 		double c = 0.2;
-		double b = 0.1;
+		double b = 1;
 		List<List<Double>> S = new ArrayList<>();
 		List<List<Double>> alpha = new ArrayList<>();
 		List<List<Double>> f = new ArrayList<>();

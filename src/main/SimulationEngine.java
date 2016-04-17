@@ -101,7 +101,7 @@ public class SimulationEngine {
 			}
 			S.add(lIns);
 		}
-		/**
+		
 		//test S
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
@@ -111,7 +111,7 @@ public class SimulationEngine {
 		}
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
-		*/
+		
 		
 		//calculate nxn matrix q
 		List<List<Double>> q = new ArrayList<>();
@@ -228,11 +228,12 @@ public class SimulationEngine {
 	//Qiang
 	public static void update(double b,List<List<Double>> f, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
 		double error=updateParameters(f,b,g,alpha,N,S);
+		//error=updateParameters(f,b,g,alpha,N,S);		/**
 		while(error>0.1){
 			error=updateParameters(f,b,g,alpha,N,S);
 		}
-		//System.out.format("%f%n",error);
-		
+		System.out.format("%f%n",error);
+
 		
 
 	}
@@ -250,6 +251,7 @@ public class SimulationEngine {
 	//Kai
 	private static double updateParameters( List<List<Double>> f,double b, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
 		double error=0;
+		double fmin=0.000001;
 		//calculate g
 		for(int i=0;i<g.size();i++){
 			for(int j=0;j<g.get(i).size();j++){
@@ -260,8 +262,7 @@ public class SimulationEngine {
 				g.get(i).set(j,S.get(i).get(j)*f.get(i).get(j)*N.get(j)/(b*N.get(j)+sum));
 			}
 		}
-		//System.out.println(g.size());
-		
+		/**
 		//test g
 		for(int i=0; i<g.size(); i++) {
 			for(int j=0; j<g.get(i).size(); j++) {
@@ -271,21 +272,29 @@ public class SimulationEngine {
 		}
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
-		
+		*/
 		//calculate f
 		for(int i=0;i<g.size();i++){
-			for(int j=0;j<g.get(i).size();j++){
-				double sum=0;
-				double oldValue=f.get(i).get(j);
-				for(int k=0;k<g.size();k++){
-					sum = sum + g.get(i).get(k);		
+			for(int j=0;j<g.get(i).size();j++){				
+				if (S.get(i).get(j)==0){
+					f.get(i).set(j, 0.0);
 				}
-				double newValue=g.get(i).get(j)/sum;
-				f.get(i).set(i,newValue);
-				error=Math.max(error,Math.abs((newValue-oldValue)/oldValue));
-				System.out.println(error);
+				else{
+					double sum=0;
+					double oldValue=f.get(i).get(j);
+					for(int k=0;k<g.size();k++){
+						sum = sum + g.get(i).get(k);		
+					}
+					double newValue=g.get(i).get(j)/sum;
+					if (newValue<fmin && S.get(i).get(j)>0){
+						newValue=fmin;
+					}
+					f.get(i).set(j,newValue);
+					error=Math.max(error,Math.abs((newValue-oldValue)/oldValue));
+				}			//System.out.println(error);
 			}
 		}
+
 		//test f
 		for(int i=0; i<f.size(); i++) {
 			for(int j=0; j<f.get(i).size(); j++) {
