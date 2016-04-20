@@ -162,14 +162,16 @@ public class SimulationEngine {
 		for(int i=0; i<n; i++) {
 			List<Double> lIns = new ArrayList<>();
 			for(int j=0; j<n; j++) {
-				if (j == i)
+				if (S.get(i).get(j) == 0)
+				{
 					lIns.add(0.0);
-				else
+				} else {
 					lIns.add(1.0/(n-1));
+				}
 			}
 			f.add(lIns);
 		}
-		/*
+		
 		//test f
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
@@ -179,7 +181,7 @@ public class SimulationEngine {
 		}
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
-		**/
+		
 		
 		//initialize nxn matrix g - simply all 0
 		for(int i=0; i<n; i++) {
