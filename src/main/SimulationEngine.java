@@ -330,12 +330,16 @@ public class SimulationEngine {
 	 */
 	private static void updatePopulation(List<Integer> N, double deltaT, List<List<Double>> g){
 		double lambda = 0.1;
+		List<Integer> tempN =new ArrayList<>();
+		for(int i=0;i<N.size();i++){
+			tempN.add(N.get(i));
+		}
 		for(int i=0;i<N.size();i++){
 			double sum = 0;
 			for(int j=0; j<N.size();j++){
-				sum = sum + lambda*N.get(i)*g.get(i).get(j)-N.get(j)*g.get(j).get(i);
+				sum = sum + lambda*tempN.get(i)*g.get(i).get(j)-tempN.get(j)*g.get(j).get(i);
 			}
-			N.set(i,(int) (N.get(i)*(1-deltaT)+deltaT*sum));
+			N.set(i,(int) (tempN.get(i)*(1-deltaT)+deltaT*sum));
 		}
 		
 	}
