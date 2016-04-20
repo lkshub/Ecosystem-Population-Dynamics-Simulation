@@ -23,6 +23,7 @@ public class Main {
 		int speciesNum = 7;
 		double c = 0.2;
 		double b = 1;
+		double deltaT=0.2;
 		List<List<Double>> S = new ArrayList<>();
 		List<List<Double>> alpha = new ArrayList<>();
 		List<List<Double>> f = new ArrayList<>();
@@ -31,6 +32,6 @@ public class Main {
 		List<Boolean> attr = new ArrayList<>();
 		
 		SimulationEngine.initialize(attributeNumTotal, attributeNumSelect, speciesNum, c, S, alpha, f, g, N, attr);
-		SimulationEngine.update(b,f,g,alpha,N,S);
+		SimulationEngine.update(deltaT,b,f,g,alpha,N,S);
 	}
 }

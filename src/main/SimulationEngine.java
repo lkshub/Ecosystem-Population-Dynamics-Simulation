@@ -226,15 +226,20 @@ public class SimulationEngine {
 	 * This function is used for updating the population of species for each time step.
 	 */
 	//Qiang
-	public static void update(double b,List<List<Double>> f, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
+	public static void update(double deltaT,double b,List<List<Double>> f, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
+		for(int i =0; i<N.size();i++){
+			System.out.print(N.get(i)+" ");
+		}
 		double error=updateParameters(f,b,g,alpha,N,S);
 		//error=updateParameters(f,b,g,alpha,N,S);		/**
 		while(error>0.1){
 			error=updateParameters(f,b,g,alpha,N,S);
 		}
-		System.out.format("%f%n",error);
-
-		
+		//System.out.format("%f%n",error);
+		updatePopulation(N,deltaT,g);
+		for(int i =0; i<N.size();i++){
+			System.out.print(N.get(i)+" ");
+		}
 
 	}
 	/**
@@ -316,6 +321,14 @@ public class SimulationEngine {
 	 * @param g
 	 */
 	private static void updatePopulation(List<Integer> N, double deltaT, List<List<Double>> g){
+		double lambda = 0.1;
+		for(int i=0;i<N.size();i++){
+			double sum = 0;
+			for(int j=0; j<N.size();j++){
+				sum = sum + lambda*N.get(i)*g.get(i).get(j)-N.get(j)*g.get(j).get(i);
+			}
+			N.set(i,(int) (N.get(i)*(1-deltaT)+deltaT*sum));
+		}
 		
 	}
 	/**
