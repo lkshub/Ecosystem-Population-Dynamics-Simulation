@@ -1,7 +1,9 @@
 package functions;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 public class Function {
@@ -29,7 +31,7 @@ public class Function {
 	 */
 	
 	//Yuzhi
-	public static int[] uniqueRandom(int m, int n) {
+	public static List<Integer> uniqueRandom(int m, int n) {
 		HashSet<Integer> set = new HashSet<>();
 		int[] uniqueList = new int[m];
 		int ulIndex = 0;
@@ -41,7 +43,11 @@ public class Function {
 				uniqueList[ulIndex++] = ulNum;
 			}
 		}
-		return uniqueList;
+		List<Integer> res = new ArrayList<Integer>();
+		for(int i = 0; i < uniqueList.length; i++){
+			res.add(uniqueList[i]);
+		}
+		return res;
 	}
 	
 	/**

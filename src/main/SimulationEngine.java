@@ -22,11 +22,11 @@ public class SimulationEngine {
 	 * Output: attr(K length list - whether used) ???
 	 */
 	//Yuzhi
-	public static void initialize(int K, int L, int n, double c,
-			List<List<Double>> S, List<List<Double>> alpha, List<List<Double>> f, List<List<Double>> g, List<Integer> N, List<Boolean> attr){
+	public static void initialize(List<List<Double>> m, int K, int L, int n, double c,
+			List<List<Double>> S, List<List<Double>> alpha, List<List<Double>> f, List<List<Double>> g, List<Integer> N, List<List<Integer>> nF){
 		
 		//create ana initialize KxK matrix m (Gaussian Dist.)
-		List<List<Double>> m = new ArrayList<>();
+		//List<List<Double>> m = new ArrayList<>();
 		for(int i=0; i<K; i++) {
 			List<Double> lIns = new ArrayList<>();
 			for(int j=0; j<K; j++) {
@@ -55,13 +55,9 @@ public class SimulationEngine {
 		*/
 		
 		//create and initialize n length list nF - each item in N is a list of its used features' indexes.
-		List<List<Integer>> nF = new ArrayList<>();
+		//List<List<Integer>> nF = new ArrayList<>();
 		for(int i=0; i<n; i++) {
-			List<Integer> lIns = new ArrayList<>();
-			int[] uniqueList = Function.uniqueRandom(L, K);
-			for(int j=0; j<L; j++) {
-				lIns.add(uniqueList[j]);
-			}
+			List<Integer> lIns = Function.uniqueRandom(L, K);
 			nF.add(lIns);
 		}
 		/*
@@ -103,6 +99,7 @@ public class SimulationEngine {
 		}
 		
 		//test S
+		/*
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
 				System.out.print(Function.printFormat2(S.get(i).get(j)) + " ");
@@ -111,7 +108,7 @@ public class SimulationEngine {
 		}
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
-		
+		*/
 		
 		//calculate nxn matrix q
 		List<List<Double>> q = new ArrayList<>();
@@ -203,7 +200,7 @@ public class SimulationEngine {
 		
 		//initialize n length list N - population
 		for(int i=0; i<n; i++) {
-			N.add( (int) Function.GaussianRNG(50, 20) );
+			N.add( (int) Function.GaussianRNG(10, 5) );
 		}
 		/*
 		//test N
@@ -230,6 +227,7 @@ public class SimulationEngine {
 		for(int i =0; i<N.size();i++){
 			System.out.print(N.get(i)+" ");
 		}
+		System.out.println();
 		double error=updateParameters(f,b,g,alpha,N,S);
 		//error=updateParameters(f,b,g,alpha,N,S);		/**
 		while(error>0.1){
@@ -237,9 +235,12 @@ public class SimulationEngine {
 		}
 		//System.out.format("%f%n",error);
 		updatePopulation(N,deltaT,g);
+		/*
 		for(int i =0; i<N.size();i++){
 			System.out.print(N.get(i)+" ");
 		}
+		System.out.println();
+		*/
 
 	}
 	/**
@@ -267,7 +268,7 @@ public class SimulationEngine {
 				g.get(i).set(j,S.get(i).get(j)*f.get(i).get(j)*N.get(j)/(b*N.get(j)+sum));
 			}
 		}
-		/**
+		/*
 		//test g
 		for(int i=0; i<g.size(); i++) {
 			for(int j=0; j<g.get(i).size(); j++) {
@@ -301,6 +302,7 @@ public class SimulationEngine {
 		}
 
 		//test f
+		/*
 		for(int i=0; i<f.size(); i++) {
 			for(int j=0; j<f.get(i).size(); j++) {
 				System.out.print(Function.printFormat2(f.get(i).get(j)) + " ");
@@ -310,6 +312,7 @@ public class SimulationEngine {
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
 		//System.out.format("%f%n",error);
+		 */
 		return error;
 		
 	}
@@ -344,49 +347,43 @@ public class SimulationEngine {
 	//add m to args
 	//add L to args
 	//add c to args
-	private static void generateNewSpecies( List<List<Double>> m, int L, double c,
-			List<List<Double>> S, 
-			List<List<Double>> alpha, List<List<Double>> f, List<Integer> N,List<List<Boolean>> attr){
-		//s
+	public static void generateNewSpecies( List<List<Double>> m, int L, double c, List<List<Double>> S, 
+			List<List<Double>> alpha, List<List<Double>> f, List<Integer> N,List<List<Integer>> attr, 
+			List<List<Double>> g){
+		
 		int K = m.size();
-		List<Integer> newAttrIndex = new ArrayList<Integer>();
-		attr.add(new ArrayList<Boolean>());
-		List<Boolean> newAttr = attr.get(attr.size()-1);
-		for(int i = 0; i < K; i++){
-			newAttr.add(false);
-		}
-		for(int i = 0; i < L; i++){
-			int temp = (int)Math.random()*K;
-			if(!newAttr.get(temp)){
-				newAttr.set(temp, true);
-				newAttrIndex.add(temp);
-			}
-			else{
-				i--;
-			}
-		}
+		int n = S.size();
+		List<Integer> newSpeciesAttr = Function.uniqueRandom(L, K);
+		
 		List<Double> newS = new ArrayList<Double>();
-		for(int i = 0; i < S.size(); i++){
-			double sumM = 0;
-			for(int j = 0; j < K; j++){
-				if(attr.get(i).get(j)){
-					for(int ii = 0; ii < newAttrIndex.size(); ii++){
-						sumM += m.get(j).get(newAttrIndex.get(ii));
-					}
+		
+		for(int i = 0; i < n; i++){
+			List<Double> tempS = S.get(i);
+			List<Integer> tempAttr = attr.get(i);
+			double sum = 0;
+			for(int a = 0; a < L; a++){
+				for(int b = 0; b < L; b++){
+					sum += m.get(tempAttr.get(a)).get(newSpeciesAttr.get(b));
 				}
 			}
-			sumM = sumM/L;
-			if(sumM<=0){
-				sumM = 0;
-			}
-			S.get(i).add(sumM);
-			newS.add(sumM);
+			if(sum > 0) sum = 0;
+			else sum /= L;
+			tempS.add(-sum);
+			newS.add(sum);
 		}
+		newS.add(0.0);
 		S.add(newS);
 		
 		List<Double> newQ = new ArrayList<Double>();
-		for(int i = 0; i < S.size()+1; i++){
-			newQ.add(Function.GaussianRNG(0, 1));
+		for(int i = 0; i < n; i++){
+			double tempQ = 0;
+			for(int j = 0; j < L; j++){
+				int temp = newSpeciesAttr.get(j);
+				if(attr.get(i).contains(temp)){
+					tempQ++;
+				}
+			}
+			newQ.add(tempQ/L);
 		}
 		//Update alpha
 		List<Double> newAlpha = new ArrayList<Double>();
@@ -395,6 +392,7 @@ public class SimulationEngine {
 			alpha.get(i).add(temp);
 			newAlpha.add(temp);
 		}
+		newAlpha.add(1.0);
 		alpha.add(newAlpha);
 		
 		//update f
@@ -402,9 +400,24 @@ public class SimulationEngine {
 		for(int i = 0; i < f.size(); i++){
 			double temp = Function.GaussianRNG(0, 1);
 			f.get(i).add(temp);
-			newF.add(-temp);
+			newF.add(1.0/n+1);
 		}
+		newF.add(1.0/n+1);
 		f.add(newF);
+		
+		int ave = 0;
+		for(int i = 0; i < n; i++){
+			ave += N.get(i);
+		}
+		N.add(ave/n);
+		
+		List<Double> newG = new ArrayList<Double>();
+		for(int i = 0; i < g.size(); i++){
+			g.get(i).add(0.0);
+			newG.add(0.0);
+		}
+		newG.add(0.0);
+		g.add(newG);
 		
 	}
 	
