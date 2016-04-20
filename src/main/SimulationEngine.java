@@ -39,7 +39,7 @@ public class SimulationEngine {
 			}
 			m.add(lIns);
 		}
-		/**
+		/*
 		//test m
 		for(int i=0; i<K; i++) {
 			for(int j=0; j<K; j++) {
@@ -64,7 +64,7 @@ public class SimulationEngine {
 			}
 			nF.add(lIns);
 		}
-		/**
+		/*
 		//test nF
 		for(int i=0; i<n; i++) {
 			System.out.print("Species " + i + " has the following features: ");
@@ -129,7 +129,7 @@ public class SimulationEngine {
 			}
 			q.add(lIns);
 		}
-		/**
+		/*
 		//test q
 		for(int i=0; i<n; i++) {
 			for(int j=0;  j<n; j++) {
@@ -149,7 +149,7 @@ public class SimulationEngine {
 			}
 			alpha.add(lIns);
 		}
-		/**
+		/*
 		//test alpha
 		for(int i=0; i<n; i++) {
 			for(int j=0;  j<n; j++) {
@@ -169,7 +169,7 @@ public class SimulationEngine {
 			}
 			f.add(lIns);
 		}
-		/**
+		/*
 		//test f
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
@@ -189,7 +189,7 @@ public class SimulationEngine {
 			}
 			g.add(lIns);
 		}
-		/**
+		/*
 		//test g
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
@@ -205,7 +205,7 @@ public class SimulationEngine {
 		for(int i=0; i<n; i++) {
 			N.add( (int) Function.GaussianRNG(50, 20) );
 		}
-		/**
+		/*
 		//test N
 		for(int i=0; i<n; i++) {
 			System.out.println("Species " + i + "'s population is: " + N.get(i));
@@ -215,7 +215,7 @@ public class SimulationEngine {
 		*/
 		
 	}
-	/**
+	/*
 	 * This function is used for the initializing the system at first.
 	 * Input:K,n,L,c
 	 * Output:alpha,S,f
@@ -319,11 +319,79 @@ public class SimulationEngine {
 		
 	}
 	/**
-	 * This function is used for update the environment such as whether new species comes in 
-	 * and whether the species relationship changes.
+	 * Input: N
+	 * Output: S, alpha, f, attr
+	 * @param S
+	 * @param alpha
+	 * @param f
+	 * @param N
+	 * @param attr
 	 */
 	//Tong
-	private static void generateNewSpecies( List<List<Double>> S, List<List<Double>> alpha, List<List<Double>> f, List<Integer> N,List<List<Boolean>> attr){
+	//add m to args
+	//add L to args
+	//add c to args
+	private static void generateNewSpecies( List<List<Double>> m, int L, double c,
+			List<List<Double>> S, 
+			List<List<Double>> alpha, List<List<Double>> f, List<Integer> N,List<List<Boolean>> attr){
+		//s
+		int K = m.size();
+		List<Integer> newAttrIndex = new ArrayList<Integer>();
+		attr.add(new ArrayList<Boolean>());
+		List<Boolean> newAttr = attr.get(attr.size()-1);
+		for(int i = 0; i < K; i++){
+			newAttr.add(false);
+		}
+		for(int i = 0; i < L; i++){
+			int temp = (int)Math.random()*K;
+			if(!newAttr.get(temp)){
+				newAttr.set(temp, true);
+				newAttrIndex.add(temp);
+			}
+			else{
+				i--;
+			}
+		}
+		List<Double> newS = new ArrayList<Double>();
+		for(int i = 0; i < S.size(); i++){
+			double sumM = 0;
+			for(int j = 0; j < K; j++){
+				if(attr.get(i).get(j)){
+					for(int ii = 0; ii < newAttrIndex.size(); ii++){
+						sumM += m.get(j).get(newAttrIndex.get(ii));
+					}
+				}
+			}
+			sumM = sumM/L;
+			if(sumM<=0){
+				sumM = 0;
+			}
+			S.get(i).add(sumM);
+			newS.add(sumM);
+		}
+		S.add(newS);
+		
+		List<Double> newQ = new ArrayList<Double>();
+		for(int i = 0; i < S.size()+1; i++){
+			newQ.add(Function.GaussianRNG(0, 1));
+		}
+		//Update alpha
+		List<Double> newAlpha = new ArrayList<Double>();
+		for(int i = 0; i <alpha.size(); i++){
+			double temp= c+(1-c)*newQ.get(i); 
+			alpha.get(i).add(temp);
+			newAlpha.add(temp);
+		}
+		alpha.add(newAlpha);
+		
+		//update f
+		List<Double> newF = new ArrayList<Double>();
+		for(int i = 0; i < f.size(); i++){
+			double temp = Function.GaussianRNG(0, 1);
+			f.get(i).add(temp);
+			newF.add(-temp);
+		}
+		f.add(newF);
 		
 	}
 	

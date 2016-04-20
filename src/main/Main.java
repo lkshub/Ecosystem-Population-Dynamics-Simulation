@@ -9,7 +9,8 @@ import java.util.List;
 
 public class Main {
 	public static void main(String[] args){
-		/** old
+		/* 
+		old
 		GlobalVariable globalVariable = new GlobalVariable();
 		List<Species> speciesList = new ArrayList<Species>();
 		int numSpecies = 10;
