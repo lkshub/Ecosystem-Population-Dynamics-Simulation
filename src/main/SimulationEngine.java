@@ -90,10 +90,10 @@ public class SimulationEngine {
 //					System.out.println(" ");
 				}
 				
-				if(sij>0)
-					lIns.add(sij);
-				else
+				if(i==0)
 					lIns.add(0.0);
+				else
+					lIns.add(Math.max(0, sij));
 			}
 			S.add(lIns);
 		}
@@ -171,7 +171,7 @@ public class SimulationEngine {
 			}
 			f.add(lIns);
 		}
-		
+		/*
 		//test f
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
@@ -182,12 +182,12 @@ public class SimulationEngine {
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
 		
-		
+		*/
 		//initialize nxn matrix g - simply all 0
 		for(int i=0; i<n; i++) {
 			List<Double> lIns = new ArrayList<>();
 			for(int j=0; j<n; j++) {
-				lIns.add(0.0);
+				lIns.add(1.0/n);
 			}
 			g.add(lIns);
 		}
@@ -204,8 +204,12 @@ public class SimulationEngine {
 		*/
 		
 		//initialize n length list N - population
-		for(int i=0; i<n; i++) {
-			N.add( (int) Function.GaussianRNG(10, 5) );
+		int ratio=100;
+		int meanPopulation=50;
+		int varPopulation=5;
+		N.add(meanPopulation*ratio);
+		for(int i=1; i<n; i++) {
+			N.add( (int) Function.GaussianRNG(meanPopulation, varPopulation) );
 		}
 		/*
 		//test N
@@ -228,8 +232,8 @@ public class SimulationEngine {
 	 * This function is used for updating the population of species for each time step.
 	 */
 	//Qiang
-	public static void update(double deltaT,double b,List<List<Double>> f, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
-		for(int i =0; i<N.size();i++){
+	public static boolean update(double deltaT,double b,List<List<Double>> f, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
+		for(int i =1; i<N.size();i++){
 			System.out.print(N.get(i)+" ");
 		}
 		System.out.println();
@@ -239,14 +243,14 @@ public class SimulationEngine {
 			error=updateParameters(f,b,g,alpha,N,S);
 		}
 		//System.out.format("%f%n",error);
-		updatePopulation(N,deltaT,g);
+		
 		/*
 		for(int i =0; i<N.size();i++){
 			System.out.print(N.get(i)+" ");
 		}
 		System.out.println();
 		*/
-
+		return updatePopulation(N,deltaT,g);
 	}
 	/**
 	 * Input:f,b,alpha,N,S
@@ -269,8 +273,16 @@ public class SimulationEngine {
 				double sum=0;
 				for(int k=0;k<g.size();k++){
 					sum = sum + alpha.get(k).get(i)*S.get(k).get(j)*f.get(k).get(j)*N.get(k);		
+				
+				//System.out.println("f: "+f.get(k).get(j));
 				}
-				g.get(i).set(j,S.get(i).get(j)*f.get(i).get(j)*N.get(j)/(b*N.get(j)+sum));
+				//System.out.println("Sum: "+sum);
+				if(N.get(j)==0){
+					g.get(i).set(j, 0.0);
+				}
+				else{
+					g.get(i).set(j,S.get(i).get(j)*f.get(i).get(j)*N.get(j)/(b*N.get(j)+sum));
+				}
 			}
 		}
 		/*
@@ -328,19 +340,25 @@ public class SimulationEngine {
 	 * @param deltaT
 	 * @param g
 	 */
-	private static void updatePopulation(List<Integer> N, double deltaT, List<List<Double>> g){
-		double lambda = 0.1;
+	private static boolean updatePopulation(List<Integer> N, double deltaT, List<List<Double>> g){
+		double lambda = 0.5;
 		List<Integer> tempN =new ArrayList<>();
 		for(int i=0;i<N.size();i++){
 			tempN.add(N.get(i));
 		}
-		for(int i=0;i<N.size();i++){
+		for(int i=1;i<N.size();i++){
 			double sum = 0;
 			for(int j=0; j<N.size();j++){
 				sum = sum + lambda*tempN.get(i)*g.get(i).get(j)-tempN.get(j)*g.get(j).get(i);
+				//System.out.println(g.get(i).get(j));
 			}
-			N.set(i,(int) (tempN.get(i)*(1-deltaT)+deltaT*sum));
+			N.set(i,Math.max(0,(int) (tempN.get(i)*(1-deltaT)+deltaT*sum)));
 		}
+		double change=0;
+		for(int i=0;i<N.size();i++){
+			change += Math.abs(tempN.get(i)-N.get(i));
+		}
+		return change/N.size()>0.1;
 		
 	}
 	/**
