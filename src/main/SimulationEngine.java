@@ -99,7 +99,7 @@ public class SimulationEngine {
 		}
 		
 		//test S
-		
+		/*
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
 				System.out.print(Function.printFormat2(S.get(i).get(j)) + " ");
@@ -108,7 +108,7 @@ public class SimulationEngine {
 		}
 		System.out.println("------------------------------------------------------------"
 				 + "------------------------------------------------------------");
-		
+		*/
 		
 		//calculate nxn matrix q
 		List<List<Double>> q = new ArrayList<>();
@@ -204,16 +204,13 @@ public class SimulationEngine {
 		*/
 		
 		//initialize n length list N - population
-		int ratio=1;
-		int meanPopulation=5000;
+		int ratio=100;
+		int meanPopulation=50;
 		int varPopulation=5;
 		N.add(meanPopulation*ratio);
-		//System.out.println(N);
 		for(int i=1; i<n; i++) {
 			N.add( (int) Function.GaussianRNG(meanPopulation, varPopulation) );
-			//System.out.println(N.get(i));
 		}
-		//System.out.print(N);
 		/*
 		//test N
 		for(int i=0; i<n; i++) {
@@ -236,7 +233,10 @@ public class SimulationEngine {
 	 */
 	//Qiang
 	public static boolean update(double deltaT,double b,List<List<Double>> f, List<List<Double>> g, List<List<Double>> alpha,List<Integer> N, List<List<Double>> S){
-		
+		for(int i =1; i<N.size();i++){
+			System.out.print(N.get(i)+" ");
+		}
+		System.out.println();
 		double error=updateParameters(f,b,g,alpha,N,S);
 		//error=updateParameters(f,b,g,alpha,N,S);		/**
 		while(error>0.1){
@@ -341,12 +341,12 @@ public class SimulationEngine {
 	 * @param g
 	 */
 	private static boolean updatePopulation(List<Integer> N, double deltaT, List<List<Double>> g){
-		double lambda = 0.2;
+		double lambda = 0.5;
 		List<Integer> tempN =new ArrayList<>();
 		for(int i=0;i<N.size();i++){
 			tempN.add(N.get(i));
 		}
-		for(int i=0;i<N.size();i++){
+		for(int i=1;i<N.size();i++){
 			double sum = 0;
 			for(int j=0; j<N.size();j++){
 				sum = sum + lambda*tempN.get(i)*g.get(i).get(j)-tempN.get(j)*g.get(j).get(i);
@@ -354,12 +354,11 @@ public class SimulationEngine {
 			}
 			N.set(i,Math.max(0,(int) (tempN.get(i)*(1-deltaT)+deltaT*sum)));
 		}
-		N.set(0, (int)(N.get(0)*1.017));
 		double change=0;
 		for(int i=0;i<N.size();i++){
 			change += Math.abs(tempN.get(i)-N.get(i));
 		}
-		return change/N.size()>0.0;
+		return change/N.size()>0.1;
 		
 	}
 	/**
