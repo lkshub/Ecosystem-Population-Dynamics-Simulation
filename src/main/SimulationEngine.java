@@ -354,7 +354,7 @@ public class SimulationEngine {
 			}
 			N.set(i,Math.max(0,(int) (tempN.get(i)*(1-deltaT)+deltaT*sum)));
 		}
-		N.set(0, (int)(N.get(0)*1.017));
+		N.set(0, (int)(N.get(0)*1.01457));
 		double change=0;
 		for(int i=0;i<N.size();i++){
 			change += Math.abs(tempN.get(i)-N.get(i));
@@ -380,13 +380,15 @@ public class SimulationEngine {
 			List<List<Double>> g){
 		
 		int K = m.size();
-		int n = S.size();
+		int n = N.size();
 		List<Integer> newSpeciesAttr = Function.uniqueRandom(L, K);
+		attr.add(newSpeciesAttr);
 		
 		List<Double> newS = new ArrayList<Double>();
 		
 		for(int i = 0; i < n; i++){
 			List<Double> tempS = S.get(i);
+			//System.out.println(i);
 			List<Integer> tempAttr = attr.get(i);
 			double sum = 0;
 			for(int a = 0; a < L; a++){
@@ -434,10 +436,13 @@ public class SimulationEngine {
 		f.add(newF);
 		
 		int ave = 0;
-		for(int i = 0; i < n; i++){
+		int count = 0;
+		for(int i = 1; i < n; i++){
 			ave += N.get(i);
+			if(N.get(i) != 0)count++;
 		}
-		N.add(ave/n);
+		if(count == 0) N.add(1);
+		else N.add(ave/count);
 		
 		List<Double> newG = new ArrayList<Double>();
 		for(int i = 0; i < g.size(); i++){
@@ -448,5 +453,8 @@ public class SimulationEngine {
 		g.add(newG);
 		
 	}
+	
+
+
 	
 }

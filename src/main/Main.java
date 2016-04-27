@@ -19,11 +19,11 @@ public class Main {
 		*/
 		
 		int attributeNumTotal = 200;
-		int attributeNumSelect = 100;
+		int attributeNumSelect = 20;
 		int speciesNum = 50;
-		double c = 0.8;
-		double b = 0.1;
-		double deltaT=0.02;
+		double c = 0.2;
+		double b = 0.005;
+		double deltaT=0.005;
 		List<List<Double>> m = new ArrayList<List<Double>>();
 		List<List<Double>> S = new ArrayList<>();
 		List<List<Double>> alpha = new ArrayList<>();
@@ -33,12 +33,25 @@ public class Main {
 		List<List<Integer>> attr = new ArrayList<List<Integer>>();
 		
 		SimulationEngine.initialize(m, attributeNumTotal, attributeNumSelect, speciesNum, c, S, alpha, f, g, N, attr);
-		SimulationEngine.generateNewSpecies(m, attributeNumSelect, c, S, alpha, f, N, attr, g);
+		//SimulationEngine.generateNewSpecies(m, attributeNumSelect, c, S, alpha, f, N, attr, g);
 		
 		boolean unstable = true;
-		while(unstable){
-			unstable = SimulationEngine.update(deltaT,b,f,g,alpha,N,S);
-			//unstable = true;
+		int index=0;
+		for (int step=0;step<10;step++){
+			while(unstable){
+				unstable = SimulationEngine.update(deltaT,b,f,g,alpha,N,S);
+				if(index % 3 ==0){
+					for(int i =0; i<N.size();i++){
+						System.out.print(N.get(i)+" ");
+					}
+					System.out.println();
+				}
+				index++;
+				//unstable = true;
+			}
+			System.out.println("New generated!");
+			SimulationEngine.generateNewSpecies(m, attributeNumSelect, c, S, alpha, f, N, attr, g);
+			unstable=true;
 		}
 		/*
 		for(int i = 0; i < 1000; i++){
